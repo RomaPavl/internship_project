@@ -32,8 +32,9 @@ In order to create a local copy of the project you need:
 6. Clicks `+` icon, select `Tomcat Server –>> Local`
 7. Clicks on “Server” tab, then press `Configure...` button and select the directory with Tomcat server
 8. Clicks on “Deployment” tab, then press `+` icon to select an artifact to deploy, and select `Gradle:com.softserve:class_schedule.war`
-9. Press OK to save the configuration
-10. `Run –>> Run 'Tomcat 9.0.50'` to start the backend server
+9. In this section set a "/" in Application context bar
+10. Press OK to save the configuration
+11. `Run –>> Run 'Tomcat 9.0.50'` to start the backend server
 
 ## Starting frontend server using Node.js
 1. Download and install Node.js 14.17.4 LTS version https://nodejs.org/en/
@@ -43,3 +44,9 @@ In order to create a local copy of the project you need:
 3. After the installation is finished run the following command to start the frontend server
 
        npm start
+
+## Starting Docker
+1. Configure your username, password and connection url in `hibernate.properties` file in postgresql. In connection url change 'localhost' as 'db'
+2. Configure connection url in `cache.properties` file in redis. In connection url change 'localhost' as 'redis'
+3. In `/frontend/package.json` over the scripts declaration set '"proxy": "http://backend:8080",'
+4. In root directory run command 'docker compose up --build'
