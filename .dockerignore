@@ -1,0 +1,7 @@
+frontend/
+.gradle/
+.gradle
+**/node_modules
+**/*.log
+docker-compose.yml
+.git/

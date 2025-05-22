@@ -1,0 +1,67 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15  # use the default latest Postgres (15 at the time of writing)
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      # Mount the SQL dump to initialize the database on first run
+      - "./2024-08-19.dump:/docker-entrypoint-initdb.d/init.sql:ro"
+      # (Alternatively, rename the dump file to init.sql for simplicity)
+      - "db_data:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=mydb
+    networks:
+      - product
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    networks:
+      - product
+
+  backend:
+    build: 
+      context: . 
+      dockerfile: Dockerfile   # Dockerfile for backend is at root
+    container_name: java_backend
+    depends_on:
+      - db
+      - redis
+    # The backend will listen on port 8080 (Tomcat)
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=mydb
+      - DB_USER=postgres
+      - DB_PASSWORD=admin
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # (Environment variables inserted by user; defaults for hosts/ports use service names)
+    networks:
+      - product
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile   
+    container_name: node_frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - product
+        
+volumes:
+  db_data:
+
+networks:
+  product:

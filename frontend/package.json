@@ -36,6 +36,7 @@
         "sass": "1.52.3",
         "shortid": "2.2.15"
     },
+    "proxy": "http://backend:8080",
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
