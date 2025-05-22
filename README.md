@@ -50,3 +50,10 @@ In order to create a local copy of the project you need:
 2. Configure connection url in `cache.properties` file in redis. In connection url change 'localhost' as 'redis'
 3. In `/frontend/package.json` over the scripts declaration set '"proxy": "http://backend:8080",'
 4. In root directory run command 'docker compose up --build'
+
+## Start SonarQube
+1. Install SonarQube
+2. Run server and log in into that
+3. Create token and priject
+4. After that in cmd run command `gradlew -Dsonar.login=squ_<> YOUR_TOKEN sonarqube`
+
